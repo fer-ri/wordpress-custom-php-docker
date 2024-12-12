@@ -1,0 +1,28 @@
+services:
+  wordpress:
+    build: .
+    restart: always
+    ports:
+      - 80:80
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wp
+      WORDPRESS_DB_PASSWORD: secret
+      WORDPRESS_DB_NAME: wp
+    volumes:
+      - .:/var/www/html
+
+  db:
+    # Adjust the version from https://hub.docker.com/_/mariadb
+    image: mariadb:11.6
+    restart: always
+    environment:
+      MARIADB_DATABASE: wp
+      MARIADB_USER: wp
+      MARIADB_PASSWORD: secret
+      MARIADB_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - db:/var/lib/mysql
+
+volumes:
+  db:
